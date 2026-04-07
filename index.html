@@ -1,405 +1,696 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Addrita's Green Dump</title>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&display=swap" rel="stylesheet">
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Addrita's Green Dump</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #eef5ea;
+      --card: #f8fbf6;
+      --green: #5d7c57;
+      --green-dark: #40553c;
+      --sage: #b8c9b0;
+      --text: #2f3a2d;
+      --muted: #6d7a6a;
+      --line: #d8e3d3;
+      --shadow: 0 18px 40px rgba(68, 90, 66, 0.12);
+      --radius: 24px;
+    }
 
-  body {
-    min-height: 100vh;
-    background: #f4f7ee;
-    font-family: 'Caveat', cursive;
-    padding-bottom: 4rem;
-  }
+    * { box-sizing: border-box; }
 
-  .header {
-    text-align: center;
-    padding: 3rem 1rem 1.5rem;
-  }
+    body {
+      margin: 0;
+      font-family: Inter, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(171, 202, 162, 0.35), transparent 25%),
+        radial-gradient(circle at bottom right, rgba(127, 167, 117, 0.18), transparent 22%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
 
-  .header h1 {
-    font-size: 42px;
-    font-weight: 600;
-    color: #2d5016;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    border-bottom: 3px solid #2d5016;
-    display: inline-block;
-    padding-bottom: 4px;
-  }
+    .wrap {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 56px;
+    }
 
-  .header p {
-    font-size: 20px;
-    color: #5a7a3a;
-    margin-top: 10px;
-  }
+    .hero {
+      display: grid;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
 
-  .add-btn-wrap {
-    text-align: center;
-    margin: 1rem 0 2.5rem;
-  }
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
 
-  .add-btn {
-    background: #3a6b1a;
-    color: #f4f7ee;
-    border: none;
-    padding: 12px 32px;
-    font-family: 'Caveat', cursive;
-    font-size: 22px;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: background 0.2s;
-    letter-spacing: 0.5px;
-  }
-  .add-btn:hover { background: #2d5016; }
+    h1 {
+      margin: 0;
+      font-family: Caveat, cursive;
+      font-size: clamp(2.8rem, 6vw, 4.4rem);
+      line-height: 0.95;
+      color: var(--green-dark);
+    }
 
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 2.5rem;
-    padding: 0 2.5rem;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
+    .subtitle {
+      margin: 8px 0 0;
+      color: var(--muted);
+      max-width: 700px;
+      font-size: 0.98rem;
+    }
 
-  .jar-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-  }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.7);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      color: var(--green-dark);
+      font-weight: 600;
+    }
 
-  .jar-svg-wrap {
-    width: 160px;
-    height: 180px;
-    position: relative;
-  }
+    .panel {
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.9);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
 
-  .jar-meta {
-    margin-top: 10px;
-    text-align: center;
-    max-width: 165px;
-  }
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
 
-  .jar-caption {
-    font-size: 19px;
-    color: #2d5016;
-    line-height: 1.3;
-    display: block;
-  }
+    .toolbar-left {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
 
-  .jar-date {
-    font-size: 14px;
-    color: #7a9a5a;
-    margin-top: 3px;
-    display: block;
-  }
+    .btn {
+      appearance: none;
+      border: 0;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-weight: 700;
+      font-size: 0.96rem;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, opacity 0.16s ease;
+    }
 
-  .delete-btn {
-    position: absolute;
-    top: 4px;
-    right: 4px;
-    background: rgba(180,50,50,0.82);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    font-size: 14px;
-    cursor: pointer;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-  }
+    .btn:hover { transform: translateY(-1px); }
 
-  .jar-item:hover .delete-btn { display: flex; }
+    .btn-primary {
+      background: linear-gradient(135deg, #6a8e63, #4c6d47);
+      color: white;
+      box-shadow: 0 10px 24px rgba(76, 109, 71, 0.28);
+    }
 
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.45);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-  }
+    .btn-secondary {
+      background: #edf4ea;
+      color: var(--green-dark);
+      border: 1px solid var(--line);
+    }
 
-  .modal {
-    background: #f4f7ee;
-    border-radius: 18px;
-    padding: 2rem;
-    width: 340px;
-    max-width: 94vw;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    font-family: 'Caveat', cursive;
-    border: 2px solid #3a6b1a;
-  }
+    .search {
+      min-width: min(320px, 100%);
+      max-width: 360px;
+      width: 100%;
+      position: relative;
+    }
 
-  .modal h2 {
-    font-size: 26px;
-    color: #2d5016;
-    font-weight: 600;
-  }
+    .search input {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #fbfdf9;
+      border-radius: 999px;
+      padding: 13px 16px;
+      font: inherit;
+      color: var(--text);
+      outline: none;
+    }
 
-  .modal label {
-    font-size: 16px;
-    color: #5a7a3a;
-    margin-bottom: 2px;
-    display: block;
-  }
+    .search input:focus,
+    .field input:focus,
+    .field textarea:focus {
+      border-color: #95ae8f;
+      box-shadow: 0 0 0 4px rgba(149, 174, 143, 0.18);
+    }
 
-  .modal input[type="text"],
-  .modal input[type="date"],
-  .modal textarea {
-    font-family: 'Caveat', cursive;
-    font-size: 18px;
-    border: 1.5px solid #3a6b1a;
-    border-radius: 10px;
-    padding: 8px 12px;
-    background: #fff;
-    color: #2d5016;
-    width: 100%;
-  }
+    .composer {
+      display: none;
+      margin-top: 18px;
+      border-top: 1px solid var(--line);
+      padding-top: 18px;
+    }
 
-  .modal input[type="date"] {
-    color: #3a6b1a;
-  }
+    .composer.open { display: grid; gap: 16px; }
 
-  .modal textarea { height: 60px; resize: none; }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
 
-  .img-preview {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 10px;
-    border: 1.5px dashed #3a6b1a;
-    display: none;
-  }
+    .field {
+      display: grid;
+      gap: 8px;
+    }
 
-  .file-label {
-    display: block;
-    background: #e8f0d8;
-    border: 1.5px dashed #3a6b1a;
-    border-radius: 10px;
-    text-align: center;
-    padding: 14px;
-    font-size: 19px;
-    color: #3a6b1a;
-    cursor: pointer;
-  }
+    .field label {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--green-dark);
+    }
 
-  .file-label:hover { background: #d8e8c0; }
+    .field input,
+    .field textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #fbfdf9;
+      border-radius: 16px;
+      padding: 14px 15px;
+      font: inherit;
+      outline: none;
+      color: var(--text);
+      resize: vertical;
+    }
 
-  .modal-btns {
-    display: flex;
-    gap: 10px;
-    justify-content: flex-end;
-  }
+    .field textarea { min-height: 110px; }
 
-  .modal-btns button {
-    font-family: 'Caveat', cursive;
-    font-size: 19px;
-    padding: 7px 24px;
-    border-radius: 22px;
-    cursor: pointer;
-    border: 1.5px solid #3a6b1a;
-    transition: background 0.15s;
-  }
+    .preview-box {
+      display: none;
+      grid-template-columns: 160px 1fr;
+      gap: 16px;
+      align-items: center;
+      border: 1px dashed #b5c7af;
+      border-radius: 22px;
+      padding: 16px;
+      background: #f6faf3;
+    }
 
-  .btn-save { background: #3a6b1a; color: #f4f7ee; }
-  .btn-save:hover { background: #2d5016; }
-  .btn-cancel { background: transparent; color: #3a6b1a; }
-  .btn-cancel:hover { background: #e0edc8; }
+    .preview-box.show { display: grid; }
 
-  .empty-msg {
-    text-align: center;
-    color: #7a9a5a;
-    font-size: 22px;
-    padding: 4rem;
-    grid-column: 1/-1;
-  }
+    .preview-box img {
+      width: 100%;
+      aspect-ratio: 1 / 1.15;
+      object-fit: cover;
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
 
-  .count-badge {
-    display: inline-block;
-    background: #d4eab0;
-    color: #3a6b1a;
-    font-size: 15px;
-    padding: 3px 14px;
-    border-radius: 20px;
-    margin-top: 8px;
-  }
-</style>
+    .small {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+
+    .composer-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .status {
+      min-height: 24px;
+      color: var(--green-dark);
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    .gallery {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px 18px;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 40px 24px;
+      background: rgba(255,255,255,0.72);
+      border: 1px dashed #bfd0b8;
+      border-radius: 28px;
+      color: var(--muted);
+      box-shadow: var(--shadow);
+    }
+
+    .memory-card {
+      position: relative;
+      animation: rise 0.35s ease;
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .jar {
+      position: relative;
+      width: 100%;
+      max-width: 240px;
+      margin: 0 auto;
+      filter: drop-shadow(0 14px 24px rgba(59, 83, 55, 0.14));
+    }
+
+    .lid {
+      width: 58%;
+      height: 24px;
+      margin: 0 auto -4px;
+      border-radius: 14px 14px 10px 10px;
+      border: 2px solid rgba(74, 90, 70, 0.16);
+      position: relative;
+      z-index: 3;
+    }
+
+    .jar-body {
+      aspect-ratio: 0.82 / 1;
+      background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(244, 249, 240, 0.9));
+      border-radius: 22px 22px 34px 34px;
+      border: 2px solid rgba(77, 103, 72, 0.18);
+      padding: 14px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .jar-body::before {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      border-radius: 18px 18px 28px 28px;
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.35);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .jar-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 14px 14px 24px 24px;
+      display: block;
+    }
+
+    .meta {
+      text-align: center;
+      margin-top: 12px;
+      display: grid;
+      gap: 4px;
+      justify-items: center;
+    }
+
+    .caption {
+      margin: 0;
+      font-family: Caveat, cursive;
+      font-size: 1.6rem;
+      line-height: 1;
+      color: var(--green-dark);
+      max-width: 220px;
+      word-break: break-word;
+    }
+
+    .date {
+      margin: 0;
+      font-size: 0.88rem;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+      text-transform: lowercase;
+    }
+
+    .delete-btn {
+      position: absolute;
+      right: 4px;
+      top: 12px;
+      border: 0;
+      background: rgba(47, 58, 45, 0.75);
+      color: white;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 1rem;
+      display: grid;
+      place-items: center;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: 0.18s ease;
+      z-index: 5;
+    }
+
+    .memory-card:hover .delete-btn,
+    .memory-card:focus-within .delete-btn {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    @media (max-width: 760px) {
+      .wrap { width: min(100% - 20px, 1180px); padding-top: 18px; }
+      .panel { padding: 16px; }
+      .grid { grid-template-columns: 1fr; }
+      .preview-box { grid-template-columns: 1fr; }
+      .search { max-width: none; min-width: 100%; }
+      .gallery { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 20px 12px; }
+      .caption { font-size: 1.45rem; }
+    }
+  </style>
 </head>
 <body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="title-row">
+        <div>
+          <h1>Addrita's Green Dump</h1>
+          <p class="subtitle">A soft little digital diary for photos, notes, and dates. Upload once, and your memories will show on your phone and laptop too.</p>
+        </div>
+        <div class="badge" id="memoryCount">0 memories</div>
+      </div>
 
-<div class="header">
-  <h1>Addrita's Green Dump</h1>
-  <p>a little jar for every moment ✿</p>
-  <span class="count-badge" id="count-badge">0 memories</span>
-</div>
+      <div class="panel">
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <button class="btn btn-primary" id="toggleComposerBtn">+ add a memory</button>
+            <button class="btn btn-secondary" id="uploadBtn" type="button">choose photo</button>
+          </div>
+          <div class="search">
+            <input id="searchInput" type="text" placeholder="search your captions..." />
+          </div>
+        </div>
 
-<div class="add-btn-wrap">
-  <button class="add-btn" onclick="openModal()">+ add a memory</button>
-</div>
+        <form class="composer" id="memoryForm">
+          <div class="preview-box" id="previewBox">
+            <img id="previewImage" alt="Memory preview" />
+            <div>
+              <strong>Photo ready</strong>
+              <p class="small">Your image will upload to Cloudinary, and the caption/date will be saved in Firebase. Then the memory will appear on every device.</p>
+            </div>
+          </div>
 
-<div class="grid" id="grid">
-  <div class="empty-msg" id="empty-msg">your collection is empty — dump something beautiful here!</div>
-</div>
+          <div class="grid">
+            <div class="field">
+              <label for="caption">Caption</label>
+              <textarea id="caption" placeholder="came out of nowhere" required></textarea>
+            </div>
+            <div class="field">
+              <label for="date">Date</label>
+              <input id="date" type="date" required />
+            </div>
+          </div>
 
-<div class="modal-overlay" id="modal" style="display:none;">
-  <div class="modal">
-    <h2>new memory ✦</h2>
-    <label class="file-label" for="file-input">tap to pick a photo</label>
-    <input type="file" id="file-input" accept="image/*" style="display:none;" onchange="previewImg(event)">
-    <img class="img-preview" id="img-preview" alt="preview">
-    <div>
-      <label>where were you?</label>
-      <input type="text" id="caption-input" placeholder="just driving around..." maxlength="60">
-    </div>
-    <div>
-      <label>when was it?</label>
-      <input type="date" id="date-input">
-    </div>
-    <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal()">cancel</button>
-      <button class="btn-save" onclick="saveMemory()">save it</button>
-    </div>
+          <div class="composer-actions">
+            <button class="btn btn-primary" type="submit">save memory</button>
+            <button class="btn btn-secondary" type="button" id="cancelBtn">cancel</button>
+          </div>
+          <div class="status" id="statusText"></div>
+        </form>
+      </div>
+    </section>
+
+    <section>
+      <div class="gallery" id="gallery"></div>
+      <div class="empty" id="emptyState">
+        <h3 style="margin-top:0; color: var(--green-dark);">No memories yet</h3>
+        <p style="margin-bottom:0;">Tap <strong>+ add a memory</strong>, choose a photo, write a caption, and save your first jar.</p>
+      </div>
+      <p class="footer-note">Tip: after replacing your GitHub <code>index.html</code> with this version, wait a minute and refresh the site.</p>
+    </section>
   </div>
-</div>
 
-<script>
-const LID_COLORS = ['#f5a623','#e05a2b','#f78da7','#3ec6a7','#3a6b1a','#5ba8f5','#9b59b6','#e8c840','#e05a2b'];
-let memories = [];
-let currentImg = null;
-let lidIdx = 0;
+  <script src="https://upload-widget.cloudinary.com/latest/global/all.js" type="text/javascript"></script>
 
-function loadFromStorage() {
-  try {
-    const saved = localStorage.getItem('agd_memories');
-    if (saved) {
-      memories = JSON.parse(saved);
-      lidIdx = memories.length;
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      getDocs,
+      query,
+      orderBy,
+      deleteDoc,
+      doc,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBsW-X2-zkZNHwyH2BQPX4vGwIIK4Oj4HM",
+      authDomain: "addritas-green-dump.firebaseapp.com",
+      projectId: "addritas-green-dump",
+      storageBucket: "addritas-green-dump.firebasestorage.app",
+      messagingSenderId: "445528680748",
+      appId: "1:445528680748:web:c355539f9bf485646f6489",
+      measurementId: "G-05ZGN0X79F"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const memoriesRef = collection(db, "memories");
+
+    const gallery = document.getElementById("gallery");
+    const emptyState = document.getElementById("emptyState");
+    const memoryCount = document.getElementById("memoryCount");
+    const toggleComposerBtn = document.getElementById("toggleComposerBtn");
+    const uploadBtn = document.getElementById("uploadBtn");
+    const memoryForm = document.getElementById("memoryForm");
+    const previewBox = document.getElementById("previewBox");
+    const previewImage = document.getElementById("previewImage");
+    const captionInput = document.getElementById("caption");
+    const dateInput = document.getElementById("date");
+    const cancelBtn = document.getElementById("cancelBtn");
+    const statusText = document.getElementById("statusText");
+    const searchInput = document.getElementById("searchInput");
+
+    let uploadedImageUrl = "";
+    let allMemories = [];
+
+    const lidColors = ["#cfe0c9", "#90b08a", "#a7c49d", "#7f9c77", "#dbe8d4", "#aac6a1"];
+
+    function setTodayDefault() {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, "0");
+      const dd = String(today.getDate()).padStart(2, "0");
+      dateInput.value = `${yyyy}-${mm}-${dd}`;
     }
-  } catch(e) {}
-}
 
-function saveToStorage() {
-  try {
-    localStorage.setItem('agd_memories', JSON.stringify(memories));
-  } catch(e) {}
-}
-
-function formatDate(dateStr) {
-  if (!dateStr) return '';
-  const [y, m, d] = dateStr.split('-');
-  const months = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
-  return `${parseInt(d)} ${months[parseInt(m)-1]} ${y}`;
-}
-
-function jarSVG(imgDataUrl, lidColor) {
-  const id = 'clip' + Math.random().toString(36).slice(2,8);
-  return `<svg viewBox="0 0 160 180" xmlns="http://www.w3.org/2000/svg" width="160" height="180">
-    <defs>
-      <clipPath id="${id}">
-        <path d="M30,52 Q28,50 28,48 L28,38 Q28,30 36,30 L124,30 Q132,30 132,38 L132,48 Q132,50 130,52 Q148,58 150,80 L150,148 Q150,168 130,168 L30,168 Q10,168 10,148 L10,80 Q12,58 30,52 Z"/>
-      </clipPath>
-    </defs>
-    ${imgDataUrl
-      ? `<image href="${imgDataUrl}" x="10" y="30" width="140" height="140" clip-path="url(#${id})" preserveAspectRatio="xMidYMid slice"/>`
-      : `<path d="M30,52 Q28,50 28,48 L28,38 Q28,30 36,30 L124,30 Q132,30 132,38 L132,48 Q132,50 130,52 Q148,58 150,80 L150,148 Q150,168 130,168 L30,168 Q10,168 10,148 L10,80 Q12,58 30,52 Z" fill="#c8dba8" stroke="#3a6b1a" stroke-width="1.5"/>`
+    function toggleComposer(forceOpen = null) {
+      const shouldOpen = forceOpen ?? !memoryForm.classList.contains("open");
+      memoryForm.classList.toggle("open", shouldOpen);
+      if (shouldOpen) {
+        setTodayDefault();
+        setStatus("");
+      }
     }
-    <path d="M30,52 Q28,50 28,48 L28,38 Q28,30 36,30 L124,30 Q132,30 132,38 L132,48 Q132,50 130,52 Q148,58 150,80 L150,148 Q150,168 130,168 L30,168 Q10,168 10,148 L10,80 Q12,58 30,52 Z" fill="none" stroke="#3a6b1a" stroke-width="2.5"/>
-    <rect x="22" y="14" width="116" height="22" rx="8" fill="${lidColor}" stroke="#2d5016" stroke-width="1.5"/>
-    ${[0,1,2,3,4,5,6,7].map(i => `<line x1="${34+i*14}" y1="17" x2="${34+i*14}" y2="33" stroke="#2d5016" stroke-width="1.2" opacity="0.5"/>`).join('')}
-    <ellipse cx="80" cy="14" rx="58" ry="7" fill="${lidColor}" stroke="#2d5016" stroke-width="1.5"/>
-  </svg>`;
-}
 
-function renderGrid() {
-  const grid = document.getElementById('grid');
-  const emptyMsg = document.getElementById('empty-msg');
-  const countBadge = document.getElementById('count-badge');
-  countBadge.textContent = memories.length === 1 ? '1 memory' : `${memories.length} memories`;
+    function setStatus(message, isError = false) {
+      statusText.textContent = message;
+      statusText.style.color = isError ? "#a53d3d" : "var(--green-dark)";
+    }
 
-  if (memories.length === 0) {
-    emptyMsg.style.display = 'block';
-    grid.querySelectorAll('.jar-item').forEach(e => e.remove());
-    return;
-  }
-  emptyMsg.style.display = 'none';
-  grid.querySelectorAll('.jar-item').forEach(e => e.remove());
+    function formatDate(dateString) {
+      if (!dateString) return "";
+      const date = new Date(`${dateString}T00:00:00`);
+      return date.toLocaleDateString(undefined, {
+        day: "numeric",
+        month: "short",
+        year: "numeric"
+      }).toLowerCase();
+    }
 
-  memories.forEach((mem, i) => {
-    const div = document.createElement('div');
-    div.className = 'jar-item';
-    div.innerHTML = `
-      <div class="jar-svg-wrap">
-        ${jarSVG(mem.img, mem.lid)}
-        <button class="delete-btn" title="remove" onclick="removeMemory(${i})">✕</button>
-      </div>
-      <div class="jar-meta">
-        <span class="jar-caption">${mem.caption || 'a moment'}</span>
-        ${mem.date ? `<span class="jar-date">${formatDate(mem.date)}</span>` : ''}
-      </div>
-    `;
-    grid.appendChild(div);
-  });
-}
+    function escapeHtml(str = "") {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
 
-function openModal() {
-  document.getElementById('modal').style.display = 'flex';
-  document.getElementById('caption-input').value = '';
-  document.getElementById('date-input').value = new Date().toISOString().split('T')[0];
-  document.getElementById('img-preview').style.display = 'none';
-  document.getElementById('img-preview').src = '';
-  document.getElementById('file-input').value = '';
-  currentImg = null;
-}
+    function updateCount(count) {
+      memoryCount.textContent = `${count} ${count === 1 ? "memory" : "memories"}`;
+    }
 
-function closeModal() {
-  document.getElementById('modal').style.display = 'none';
-}
+    function getFilteredMemories() {
+      const term = searchInput.value.trim().toLowerCase();
+      if (!term) return allMemories;
+      return allMemories.filter(memory =>
+        (memory.caption || "").toLowerCase().includes(term)
+      );
+    }
 
-function previewImg(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(ev) {
-    currentImg = ev.target.result;
-    const prev = document.getElementById('img-preview');
-    prev.src = currentImg;
-    prev.style.display = 'block';
-  };
-  reader.readAsDataURL(file);
-}
+    function renderMemories() {
+      const memories = getFilteredMemories();
+      gallery.innerHTML = "";
+      updateCount(allMemories.length);
+      emptyState.style.display = memories.length ? "none" : "block";
 
-function saveMemory() {
-  const caption = document.getElementById('caption-input').value.trim();
-  const date = document.getElementById('date-input').value;
-  const lid = LID_COLORS[lidIdx % LID_COLORS.length];
-  lidIdx++;
-  memories.unshift({ img: currentImg, caption: caption || 'a moment', date, lid });
-  saveToStorage();
-  renderGrid();
-  closeModal();
-}
+      memories.forEach((memory, index) => {
+        const card = document.createElement("article");
+        card.className = "memory-card";
+        const lidColor = lidColors[index % lidColors.length];
 
-function removeMemory(i) {
-  if (confirm('remove this memory?')) {
-    memories.splice(i, 1);
-    saveToStorage();
-    renderGrid();
-  }
-}
+        card.innerHTML = `
+          <button class="delete-btn" aria-label="Delete memory" data-id="${memory.id}">✕</button>
+          <div class="jar">
+            <div class="lid" style="background:${lidColor}"></div>
+            <div class="jar-body">
+              <img class="jar-photo" src="${escapeHtml(memory.imageUrl)}" alt="${escapeHtml(memory.caption || 'Memory photo')}" loading="lazy" />
+            </div>
+          </div>
+          <div class="meta">
+            <p class="caption">${escapeHtml(memory.caption || "")}</p>
+            <p class="date">${escapeHtml(formatDate(memory.date))}</p>
+          </div>
+        `;
 
-loadFromStorage();
-renderGrid();
-</script>
+        gallery.appendChild(card);
+      });
+    }
+
+    async function loadMemories() {
+      try {
+        setStatus("Loading memories...");
+        const q = query(memoriesRef, orderBy("createdAt", "desc"));
+        const snap = await getDocs(q);
+        allMemories = snap.docs.map(item => ({ id: item.id, ...item.data() }));
+        renderMemories();
+        setStatus("");
+      } catch (error) {
+        console.error(error);
+        setStatus("Could not load memories yet. Check Firestore setup and rules.", true);
+      }
+    }
+
+    async function saveMemory(imageUrl, caption, date) {
+      await addDoc(memoriesRef, {
+        imageUrl,
+        caption,
+        date,
+        createdAt: Date.now(),
+        createdAtServer: serverTimestamp()
+      });
+    }
+
+    async function removeMemory(id) {
+      try {
+        await deleteDoc(doc(db, "memories", id));
+        allMemories = allMemories.filter(memory => memory.id !== id);
+        renderMemories();
+      } catch (error) {
+        console.error(error);
+        alert("Could not delete this memory.");
+      }
+    }
+
+    const widget = cloudinary.createUploadWidget(
+      {
+        cloudName: "dgvemqx3m",
+        uploadPreset: "addritas_green_dump",
+        multiple: false,
+        maxFiles: 1,
+        sources: ["local", "camera"],
+        resourceType: "image",
+        clientAllowedFormats: ["png", "jpg", "jpeg", "webp", "heic"],
+        folder: "addritas-green-dump"
+      },
+      (error, result) => {
+        if (error) {
+          console.error(error);
+          setStatus("Photo upload failed. Please try again.", true);
+          return;
+        }
+
+        if (result && result.event === "success") {
+          uploadedImageUrl = result.info.secure_url;
+          previewImage.src = uploadedImageUrl;
+          previewBox.classList.add("show");
+          toggleComposer(true);
+          setStatus("Photo uploaded. Now add a caption and save it.");
+        }
+      }
+    );
+
+    toggleComposerBtn.addEventListener("click", () => toggleComposer());
+    uploadBtn.addEventListener("click", () => widget.open());
+    cancelBtn.addEventListener("click", () => {
+      memoryForm.reset();
+      previewBox.classList.remove("show");
+      uploadedImageUrl = "";
+      setTodayDefault();
+      setStatus("");
+      toggleComposer(false);
+    });
+
+    memoryForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const caption = captionInput.value.trim();
+      const date = dateInput.value;
+
+      if (!uploadedImageUrl) {
+        setStatus("Please choose a photo first.", true);
+        return;
+      }
+
+      if (!caption || !date) {
+        setStatus("Please add both a caption and a date.", true);
+        return;
+      }
+
+      try {
+        setStatus("Saving memory...");
+        await saveMemory(uploadedImageUrl, caption, date);
+        memoryForm.reset();
+        previewBox.classList.remove("show");
+        uploadedImageUrl = "";
+        toggleComposer(false);
+        setTodayDefault();
+        await loadMemories();
+        setStatus("Memory saved.");
+      } catch (error) {
+        console.error(error);
+        setStatus("Could not save memory. Check Firestore permissions.", true);
+      }
+    });
+
+    searchInput.addEventListener("input", renderMemories);
+
+    gallery.addEventListener("click", (event) => {
+      const button = event.target.closest(".delete-btn");
+      if (!button) return;
+      const id = button.dataset.id;
+      const yes = confirm("Delete this memory?");
+      if (yes) removeMemory(id);
+    });
+
+    setTodayDefault();
+    loadMemories();
+  </script>
 </body>
 </html>
