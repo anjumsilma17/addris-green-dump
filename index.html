@@ -445,32 +445,11 @@
   <script src="https://upload-widget.cloudinary.com/latest/global/all.js" type="text/javascript"></script>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-    import {
-      getFirestore,
-      collection,
-      addDoc,
-      getDocs,
-      query,
-      orderBy,
-      deleteDoc,
-      doc,
-      serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBsW-X2-zkZNHwyH2BQPX4vGwIIK4Oj4HM",
-      authDomain: "addritas-green-dump.firebaseapp.com",
-      projectId: "addritas-green-dump",
-      storageBucket: "addritas-green-dump.firebasestorage.app",
-      messagingSenderId: "445528680748",
-      appId: "1:445528680748:web:c355539f9bf485646f6489",
-      measurementId: "G-05ZGN0X79F"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const memoriesRef = collection(db, "memories");
+    const supabaseUrl = "https://lhsvoxadcrabsrqumzra.supabase.co";
+    const supabaseKey = "sb_publishable_WmewFvKuo5EXrljLwKg3xw_V_lq1II6";
+    const supabase = createClient(supabaseUrl, supabaseKey);
 
     const gallery = document.getElementById("gallery");
     const emptyState = document.getElementById("emptyState");
@@ -560,12 +539,12 @@
           <div class="jar">
             <div class="lid" style="background:${lidColor}"></div>
             <div class="jar-body">
-              <img class="jar-photo" src="${escapeHtml(memory.imageUrl)}" alt="${escapeHtml(memory.caption || 'Memory photo')}" loading="lazy" />
+              <img class="jar-photo" src="${escapeHtml(memory.image_url)}" alt="${escapeHtml(memory.caption || 'Memory photo')}" loading="lazy" />
             </div>
           </div>
           <div class="meta">
             <p class="caption">${escapeHtml(memory.caption || "")}</p>
-            <p class="date">${escapeHtml(formatDate(memory.date))}</p>
+            <p class="date">${escapeHtml(formatDate(memory.memory_date))}</p>
           </div>
         `;
 
@@ -576,30 +555,37 @@
     async function loadMemories() {
       try {
         setStatus("Loading memories...");
-        const q = query(memoriesRef, orderBy("createdAt", "desc"));
-        const snap = await getDocs(q);
-        allMemories = snap.docs.map(item => ({ id: item.id, ...item.data() }));
+        const { data, error } = await supabase
+          .from("memories")
+          .select("id, caption, memory_date, image_url, created_at")
+          .order("created_at", { ascending: false });
+
+        if (error) throw error;
+        allMemories = data || [];
         renderMemories();
         setStatus("");
       } catch (error) {
         console.error(error);
-        setStatus("Could not load memories yet. Check Firestore setup and rules.", true);
+        setStatus("Could not load memories yet. Finish the Supabase table setup first.", true);
       }
     }
 
     async function saveMemory(imageUrl, caption, date) {
-      await addDoc(memoriesRef, {
-        imageUrl,
-        caption,
-        date,
-        createdAt: Date.now(),
-        createdAtServer: serverTimestamp()
-      });
+      const { error } = await supabase
+        .from("memories")
+        .insert([{ image_url: imageUrl, caption, memory_date: date }]);
+
+      if (error) throw error;
     }
 
     async function removeMemory(id) {
       try {
-        await deleteDoc(doc(db, "memories", id));
+        const { error } = await supabase
+          .from("memories")
+          .delete()
+          .eq("id", id);
+
+        if (error) throw error;
         allMemories = allMemories.filter(memory => memory.id !== id);
         renderMemories();
       } catch (error) {
@@ -675,7 +661,7 @@
         setStatus("Memory saved.");
       } catch (error) {
         console.error(error);
-        setStatus("Could not save memory. Check Firestore permissions.", true);
+        setStatus("Could not save memory. Finish the Supabase table setup and RLS settings.", true);
       }
     });
 
